@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar destino</title>
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="estilos.css">
 </head>
 
 <body>
@@ -25,6 +25,9 @@
         <label for="precio">Precio:</label>
         <input type="number" step="0.01" id="precio" name="precio" required><br>
 
+        <label for="imagen">Imagen:</label>
+        <input type="file" name="imagen" id="imagen"><br>
+
         <button type="submit">Agregar destino</button>
         <a href="index.html">Menu principal</a>
     </form>
@@ -33,19 +36,21 @@
         // Capturamos el evento de envío del formulario
         document.getElementById('formulario').addEventListener('submit', function (event) {
             event.preventDefault() // Evitamos que se recargue la página
-
+            
             // Obtenemos los valores del formulario
             var codigo = document.getElementById('codigo').value
             var descripcion = document.getElementById('descripcion').value
             var cantidad = document.getElementById('cantidad').value
             var precio = document.getElementById('precio').value
-
+            var imagen = document.getElementById('imagen').value
+            
             // Creamos un objeto con los datos del destino
             var destino = {
                 codigo: codigo,
                 descripcion: descripcion,
                 cantidad: cantidad,
-                precio: precio
+                precio: precio,
+                imagen: imagen
             }
             console.log(destino)
             // Realizamos la solicitud POST al servidor
@@ -60,7 +65,7 @@
                     if (response.ok) {
                         return response.json() // Parseamos la respuesta JSON
                     } else {
-                        throw new Error('Error al agregar el destino.')
+                        throw new Error('Error al agregar el destino 1.')
                     }
                 })
                 .then(function (data) {
@@ -69,6 +74,7 @@
                     document.getElementById('descripcion').value = ""
                     document.getElementById('cantidad').value = ""
                     document.getElementById('precio').value = ""
+                    document.getElementById('imagen').value = ""
                 })
                 .catch(function (error) {
                     console.log('Error:', error)

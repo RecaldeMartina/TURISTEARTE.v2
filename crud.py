@@ -22,7 +22,7 @@ def create_table():
             descripcion TEXT NOT NULL,
             cantidad INTEGER NOT NULL,
             precio REAL NOT NULL,
-            imagen BLOB 
+            imagen BLOB
         ) ''')
     conn.commit()
     cursor.close()
@@ -45,7 +45,7 @@ class Destino:
         self.descripcion = descripcion # Descripción
         self.cantidad = cantidad       # Cantidad de pasajes disponibles
         self.precio = precio           # Precio 
-        self.imagen = Image.open(imagen)
+        self.imagen = Image.open(imagen) #Imagen
 
     # Este método permite modificar un destino.
     def modificar(self, nueva_cantidad, nuevo_precio):
@@ -66,7 +66,7 @@ class Inventario:
     # Este método permite crear objetos de la clase "destino" y agregarlos al inventario.
 
     def agregar_destino(self, codigo, descripcion, cantidad, precio, imagen):
-        destino_existente = self.consultar_Destino(codigo)
+        destino_existente = self.consultar_destino(codigo)
         if destino_existente:
             return jsonify({'message': 'Ya existe un Destino con ese código.'}), 400
         sql = f'INSERT INTO destinos VALUES ({codigo}, "{descripcion}", {cantidad}, {precio}, "{imagen}");'
@@ -145,11 +145,11 @@ class Carrito:
                 return jsonify({'message': 'destino agregado al carrito correctamente.'}), 200
        
         def agregar_imagen (descripcion):
-            if descripcion == 'Cataratas del Iguazu':
+            if descripcion == 'Cataratas del Iguazu' or descripcion == 'cataratas del Iguazu':
                 return imagenCataratas
-            if descripcion == 'Bariloche':
+            if descripcion == 'Bariloche' or descripcion == 'bariloche':
                 return imagenBariloche
-            if descripcion == 'Cordoba':
+            if descripcion == 'Cordoba' or descripcion == 'cordoba':
                 return imagenCordoba
             
         # Si no existe en el carrito, lo agregamos como un nuevo item.
@@ -215,7 +215,7 @@ def obtener_destinos():
 
 # Ruta para agregar un Destino al inventario
 @app.route('/destinos', methods=['POST'])
-def agregar_destino():
+def agregarDestino():
     codigo = request.json.get('codigo')
     descripcion = request.json.get('descripcion')
     cantidad = request.json.get('cantidad')
@@ -225,14 +225,14 @@ def agregar_destino():
 
 # Ruta para modificar un Destino del inventario
 @app.route('/destinos/<int:codigo>', methods=['PUT'])
-def modificar_destino(codigo):
+def modificarDestino(codigo):
     nueva_cantidad = request.json.get('cantidad')
     nuevo_precio = request.json.get('precio')
     return inventario.modificar_destino(codigo, nueva_cantidad, nuevo_precio)
 
 # Ruta para eliminar un Destino del inventario
 @app.route('/destinos/<int:codigo>', methods=['DELETE'])
-def eliminar_destino(codigo):
+def eliminarDestino(codigo):
     return inventario.eliminar_destino(codigo)
 
 # Ruta para agregar un Destino al carrito
