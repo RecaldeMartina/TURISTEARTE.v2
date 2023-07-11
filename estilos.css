@@ -4,6 +4,11 @@ body {
     background-color: #f9f9f9;
 }
 
+.logo{
+    display: block;
+    margin: auto
+}
+
 .contenedor-centrado {
     display:flex;
     width: 100%;
@@ -44,6 +49,12 @@ table {
 label {
     display: block;
     margin-bottom: 5px;
+}
+
+.imagen-destino {
+    width: 200px;
+    height: 150px;
+    object-fit: cover; /* Para ajustar la imagen al tamaño sin deformarla */
 }
 
 input[type="text"],
