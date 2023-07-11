@@ -5,6 +5,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar destino</title>
+    <title>Listado de destinos</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
+
+<body>
+    <h1>Listado de Destinos</h1>
+    <h3>Codo a Codo 2023</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th align="right">Precio</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody id="tabladestinos">
+        </tbody>
+    </table>
+
+    <div class="contenedor-centrado">
+        <a href="index.html">Menu principal</a>
+    </div>
+
+    <script>
+        //const URL = "http://127.0.0.1:5000/"
+        const URL = "https://martirecalde.pythonanywhere.com/"
+
+        function insertar(descripcion, imagen) {
+            if (descripcion === 'Cataratas') {
+                return 'destinos/cataratas.jpg';
+            } else if (descripcion === 'Bariloche') {
+                return 'destinos/bariloche.jpg';
+            } else if (descripcion === 'Cordoba') {
+                return 'destinos/cordoba.jpg';
+            } else {
+                // Si no coincide con ninguno de los criterios anteriores, puedes asignar una imagen genérica
+                return imagen;
+            }
+        }
+
+        // Realizamos la solicitud GET al servidor para obtener todos los destinos
+        fetch(URL + 'destinos')
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json() // Parseamos la respuesta JSON
+                } else {
+                    throw new Error('Error al obtener los destinos.')
+                }
+            })
+            .then(function (data) {
+                var tabladestinos = document.getElementById('tabladestinos')
+
+                // Iteramos sobre los destinos y agregamos filas a la tabla
+                data.forEach(function (destino) {
+                    var fila = document.createElement('tr')
+                    fila.innerHTML = '<td>' + destino.codigo + '</td>' +
+                        '<td>' + destino.descripcion + '</td>' +
+                        '<td align="right">' + destino.cantidad + '</td>' +
+                        '<td align="right">&nbsp; &nbsp;&nbsp; &nbsp;' + destino.precio + '</td>'+
+                        '<td align="right"><img src="' + insertar(destino.descripcion, destino.imagen) + '" width="200" height="150"></td>'
+                    tabladestinos.appendChild(fila)
+                })
+            })
+            .catch(function (error) {
+                console.log('Error:', error)
+                alert('Error al obtener los destinos.')
+            })
+    </script>
+</body>
+</html>
